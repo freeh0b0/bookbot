@@ -1,8 +1,25 @@
+import sys
 from stats import *
 
 def main():
-    file_path = "books/frankenstein.txt"
-    file_text = get_book_text(file_path)
+    if len(sys.argv) != 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+
+    file_path = sys.argv[1]
+
+    try:
+        file_text = get_book_text(file_path)
+    except FileNotFoundError:
+        print("File could not be found")
+        sys.exit(1)
+    except IsADirectoryError:
+        print("Path points to a directory")
+        sys.exit(1)
+    except Exception as e:
+        print("Unexpected Error:", e)
+        sys.exit(1)
+
     word_count = get_num_words(file_text)
     char_count = get_char_count(file_text)
     sorted_count = get_sorted_count(char_count)
